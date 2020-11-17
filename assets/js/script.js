@@ -23,6 +23,15 @@ var taskFormHandler = function(event) {
         type: taskTypeInput
     };
 
+    // check if input values are empty strings
+    if (!taskNameInput || !taskTypeInput) {
+        alert("You need to fill out the task form!");
+        return false;
+    }
+
+    // reset the form
+    formEl.reset();
+    
     // call createTaskEl and pass argument taskDataObj
     createTaskEl(taskDataObj);
 }
@@ -34,7 +43,6 @@ var createTaskEl = function(taskDataObj) {
 
     // create div to hold task info and add to list item
     var taskInfoEl = document.createElement("div");
-    // give it a class name
     taskInfoEl.className = "task-info";
 
     // add HTML contect to div
