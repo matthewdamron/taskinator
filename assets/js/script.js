@@ -1,5 +1,3 @@
-// find button with #save-task id and assign it var buttonEl
-// var buttonEl = document.querySelector("#save-task");
 // find form with #task-form id and assign it var formEl
 var formEl = document.querySelector("#task-form");
 
@@ -7,18 +5,29 @@ var formEl = document.querySelector("#task-form");
 var tasksToDoEl = document.querySelector("#tasks-to-do");
 
 // function to create task elements
-var createTaskHandler = function(event) {
+var taskFormHandler = function(event) {
     // stop the web page from refreshing on its on
     event.preventDefault();
 
     // get the value from our input form
     var taskNameInput = document.querySelector("input[name='task-name']").value;
-    console.log(taskNameInput);
+    // console.log(taskNameInput);
 
     // get the value from our select-dropdown list
     var taskTypeInput = document.querySelector("select[name='task-type']").value;
-    console.log(taskTypeInput);
+    // console.log(taskTypeInput);
 
+    // package up data as an object
+    var taskDataObj = {
+        name: taskNameInput,
+        type: taskTypeInput
+    };
+
+    // call createTaskEl and pass argument taskDataObj
+    createTaskEl(taskDataObj);
+}
+
+var createTaskEl = function(taskDataObj) {
     // create list item
     var listItemEl = document.createElement("li");
     listItemEl.className = "task-item";
@@ -29,7 +38,7 @@ var createTaskHandler = function(event) {
     taskInfoEl.className = "task-info";
 
     // add HTML contect to div
-    taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskNameInput + "</h3><span class='task-type'>" + taskTypeInput + "</span>";
+    taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + taskDataObj.type + "</span>";
 
     listItemEl.appendChild(taskInfoEl);
 
@@ -37,7 +46,5 @@ var createTaskHandler = function(event) {
     tasksToDoEl.appendChild(listItemEl);
 }
 
-// add EventListener to buttonEl and run createTaskHandler
-// buttonEl.addEventListener("click", createTaskHandler)
-// add EventListener to buttonEl and run createTaskHandler
-formEl.addEventListener("submit", createTaskHandler)
+// add EventListener to buttonEl and run taskFormHandler
+formEl.addEventListener("submit", taskFormHandler)
