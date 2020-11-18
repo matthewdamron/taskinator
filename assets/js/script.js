@@ -108,13 +108,22 @@ var createTaskActions = function(taskId) {
 
 // function to see what or where you clicked within the addEventListener main section
 var taskButtonHandler = function(event) {
-    console.log(event.target);
+    // get target elemnt from event
+    var targetEl = event.target;
+    var taskId = targetEl.getAttribute("data-task-id");
+
+    // check if the clicked item is the edit button
+    if (targetEl.matches(".edit-btn")) {
+        // var taskId = event.target.getAttribute("data-task-id");
+        editTask(taskId);
+    }
 
     // check if the clicked item is the delete button
-    if (event.target.matches(".delete-btn")) {
-        var taskId = event.target.getAttribute("data-task-id");
+    else if (targetEl.matches(".delete-btn")) {
+        // var taskId = event.target.getAttribute("data-task-id");
         deleteTask(taskId);
     }
+
 };
 
 // delete task after clicking the delete button in the task
@@ -122,6 +131,28 @@ var deleteTask = function(taskId) {
     // select the task for deletion
     var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
     taskSelected.remove();
+};
+
+// edit task after clicking the edit button in the task
+var editTask = function(taskId) {
+    // edit the selected task and not add another one
+    formEl.setAttribute("data-task-id", taskId);
+
+    // select the task for editing
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+
+    // get content from task name and type
+    var taskName = taskSelected.querySelector("h3.task-name").textContent;
+
+    // get task type from task type
+    var taskType = taskSelected.querySelector("span.task-type").textContent;
+
+    // display the task name and task type in the input and the select above
+    document.querySelector("input[name='task-name']").value = taskName;
+    document.querySelector("select[name='task-type']").value = taskType;
+
+    // change the button name from add to edit
+    document.querySelector("#save-task").textContent = "Save Task";
 };
 
 // addEventListener to buttonEl and run taskFormHandler
