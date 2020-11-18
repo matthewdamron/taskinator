@@ -7,6 +7,9 @@ var formEl = document.querySelector("#task-form");
 // find task list with #task-to-do id and assign it var tasksToDoEl
 var tasksToDoEl = document.querySelector("#tasks-to-do");
 
+// find the #page-content id and assign it var pageContentEl
+var pageContentEl = document.querySelector("#page-content");
+
 // function to create task elements
 var taskFormHandler = function(event) {
     // stop the web page from refreshing on its on
@@ -103,5 +106,26 @@ var createTaskActions = function(taskId) {
     return actionContainerEl;
 };
 
-// add EventListener to buttonEl and run taskFormHandler
+// function to see what or where you clicked within the addEventListener main section
+var taskButtonHandler = function(event) {
+    console.log(event.target);
+
+    // check if the clicked item is the delete button
+    if (event.target.matches(".delete-btn")) {
+        var taskId = event.target.getAttribute("data-task-id");
+        deleteTask(taskId);
+    }
+};
+
+// delete task after clicking the delete button in the task
+var deleteTask = function(taskId) {
+    // select the task for deletion
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+    taskSelected.remove();
+};
+
+// addEventListener to buttonEl and run taskFormHandler
 formEl.addEventListener("submit", taskFormHandler);
+
+// addEventListener to main section for clik
+pageContentEl.addEventListener("click", taskButtonHandler);
