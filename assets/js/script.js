@@ -34,7 +34,7 @@ var taskFormHandler = function(event) {
     // if isEdit true find the id call function to complete edit
     if (isEdit) {
         var taskId = formEl.getAttribute("data-task-id");
-        conpleteEditTask(taskNameInput, taskTypeInput, taskId);
+        completeEditTask(taskNameInput, taskTypeInput, taskId);
     }
     else {
         // package up data as an object
@@ -86,6 +86,9 @@ var createTaskEl = function(taskDataObj) {
     taskDataObj.id = taskIdCounter;
     // push taskDataObj to task array
     tasks.push(taskDataObj);
+
+    // save tasks
+    saveTasks();
 
     // add entire list item to the Task To Do category
     tasksToDoEl.appendChild(listItemEl);
@@ -168,6 +171,9 @@ var deleteTask = function(taskId) {
     }
     // reassign tasks array to be the same as updatedTaskArr
     tasks = updatedTaskArr;
+
+    // save tasks
+    saveTasks();
 };
 
 // edit task after clicking the edit button in the task
@@ -192,8 +198,8 @@ var editTask = function(taskId) {
     document.querySelector("#save-task").textContent = "Save Task";
 };
 
-// conpleteEditTask to edit the values of existing values
-var conpleteEditTask = function(taskNameInput, taskTypeInput, taskId) {
+// completeEditTask to edit the values of existing values
+var completeEditTask = function(taskNameInput, taskTypeInput, taskId) {
     // find the matching task list item
     var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
 
@@ -208,6 +214,9 @@ var conpleteEditTask = function(taskNameInput, taskTypeInput, taskId) {
             task[i].type = taskType;
         }
     };
+
+    // save tasks
+    saveTasks();
 
     alert("Task Updated!");
     formEl.removeAttribute("data-task-id");
@@ -241,6 +250,9 @@ var taskStatusChangeHandler = function(event) {
             task[i].status = statusValue;
         }
     };
+
+    // save tasks
+    saveTasks();
 };
 
 var dragTaskHandler = function(event) {
@@ -290,6 +302,9 @@ var dropTaskHandler = function(event) {
         tasks[i].status = statusSelectEl.value.toLowerCase();
         }
     }
+
+    // save tasks
+    saveTasks();
 };
 
 var dragLeaveHandler = function(event) {
@@ -297,6 +312,10 @@ var dragLeaveHandler = function(event) {
     if (taskListEl) {
         taskListEl.removeAttribute("style");
     }
+};
+
+var saveTasks = function() {
+    localStorage.setItem("tasks", tasks);
 };
 
 // addEventListener to buttonEl and run taskFormHandler
