@@ -90,8 +90,20 @@ var createTaskEl = function(taskDataObj) {
     // save tasks
     saveTasks();
 
-    // add entire list item to the Task To Do category
-    tasksToDoEl.appendChild(listItemEl);
+    // add task list item to the correct category
+    //tasksToDoEl.appendChild(listItemEl);
+    if (taskDataObj.status === "to do") {
+        listItemEl.querySelector("select[name='status-change']").selectedIndex = 0;
+        tasksToDoEl.appendChild(listItemEl);
+    }
+    else if (taskDataObj.status === "in progress") {
+        listItemEl.querySelector("select[name='status-change']").selectedIndex = 1;
+        tasksInProgressEl.appendChild(listItemEl);
+    }
+    else if (taskDataObj.status === "completed") {
+        listItemEl.querySelector("select[name='status-change']").selectedIndex = 2;
+        tasksCompletedEl.appendChild(listItemEl);
+    }
 
     // increase task counter for next unique id
     taskIdCounter++;
@@ -318,6 +330,23 @@ var saveTasks = function() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
+var loadTasks = function() {
+    // retreve the tasks from localStorage
+    var savedTasks = localStorage.getItem("tasks");
+
+    // check if the tasks is null is so return false to exit the function
+    if (!savedTasks) {
+        return false;
+    }
+
+    // convert the tasks from a stringify format to array format
+    savedTasks = JSON.parse(savedTasks);
+
+    for (i = 0; i < savedTasks.length; i++) {
+        createTaskEl(savedTasks[i]);
+    }
+};
+
 // addEventListener to buttonEl and run taskFormHandler
 formEl.addEventListener("submit", taskFormHandler);
 
@@ -338,3 +367,5 @@ pageContentEl.addEventListener("drop", dropTaskHandler);
 
 // addEventListener to dragleave
 pageContentEl.addEventListener("dragleave", dragLeaveHandler);
+
+loadTasks();
